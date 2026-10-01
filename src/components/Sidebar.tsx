@@ -11,7 +11,7 @@ import {
   FolderGit2,
   Filter
 } from 'lucide-react';
-import { Lesson, ModuleId } from '../types/curriculum';
+import type { Lesson, ModuleId } from '../types/curriculum';
 
 interface SidebarProps {
   currentModule: ModuleId | 'playground' | 'simulator';
@@ -40,8 +40,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   });
 
   return (
-    <aside className="w-80 flex-shrink-0 border-r border-slate-800 bg-slate-950/70 p-4 overflow-y-auto h-[calc(100vh-4rem)] flex flex-col justify-between">
-      <div>
+    <aside className="w-full flex-shrink-0 border-b border-slate-800 bg-slate-950/70 px-0 py-4 lg:w-80 lg:border-b-0 lg:border-r lg:px-4 lg:py-4 lg:overflow-y-auto lg:h-[calc(100dvh-4rem)]">
+      <div className="space-y-6 lg:flex lg:min-h-full lg:flex-col lg:justify-between lg:space-y-0">
+        <div>
         {/* Module Switcher in Mobile/Compact */}
         <div className="lg:hidden mb-4 space-y-1">
           <label className="text-[10px] font-semibold tracking-wider text-slate-400 uppercase">
@@ -198,10 +199,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
             );
           })}
         </div>
-      </div>
+        </div>
 
       {/* Real-time Enterprise Framework Quick Link */}
-      <div className="mt-6 rounded-xl border border-slate-800 bg-gradient-to-b from-slate-900 to-slate-950 p-3.5">
+      <div className="rounded-xl border border-slate-800 bg-gradient-to-b from-slate-900 to-slate-950 p-3.5">
         <div className="flex items-center gap-2 text-slate-200">
           <FolderGit2 className="h-4 w-4 text-blue-400" />
           <span className="text-xs font-semibold">Production Repo</span>
@@ -215,6 +216,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         >
           View Full Framework Repo →
         </button>
+      </div>
       </div>
     </aside>
   );

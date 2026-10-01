@@ -115,12 +115,12 @@ export const PlaywrightSimulator: React.FC = () => {
   const activeStep = STEPS[currentStepIndex];
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] p-4 sm:p-6 max-w-7xl mx-auto w-full">
+    <div className="mx-auto flex min-h-[calc(100dvh-4rem)] w-full max-w-7xl flex-col p-4 sm:p-6 lg:h-[calc(100dvh-4rem)] lg:min-h-0">
       {/* Header Info & Controls */}
       <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800">
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold text-white flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <h1 className="flex items-center gap-2 text-lg font-bold text-slate-100 sm:text-xl">
               <Sparkles className="h-5 w-5 text-emerald-400" />
               Interactive Playwright Method Chaining Simulator
             </h1>
@@ -134,7 +134,7 @@ export const PlaywrightSimulator: React.FC = () => {
         </div>
 
         {/* Player Controls */}
-        <div className="flex items-center gap-2.5 bg-slate-900 border border-slate-800 rounded-xl p-1.5 shadow-md">
+        <div className="mobile-scrollbar flex w-full items-center gap-2.5 overflow-x-auto rounded-xl border border-slate-800 bg-slate-900 p-1.5 shadow-md sm:w-auto">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
             className="flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3.5 py-1.5 text-xs font-bold text-white hover:bg-emerald-500 transition-all shadow-sm"
@@ -183,7 +183,7 @@ export const PlaywrightSimulator: React.FC = () => {
       {/* Main Simulator Area */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 mt-4 min-h-0">
         {/* Left Column (5 Cols): Chained Code Panel */}
-        <div className="lg:col-span-5 flex flex-col rounded-xl border border-slate-800 bg-slate-950 overflow-hidden shadow-lg">
+          <div className="flex min-h-[24rem] flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-950 shadow-lg lg:col-span-5 lg:min-h-0">
           <div className="flex items-center justify-between border-b border-slate-800 bg-slate-900/90 px-4 py-2">
             <span className="text-xs font-mono font-semibold text-slate-300">
               tests/e2e/dashboardChained.spec.ts
@@ -259,9 +259,9 @@ export const PlaywrightSimulator: React.FC = () => {
         </div>
 
         {/* Right Column (7 Cols): Simulated Browser Viewport */}
-        <div className="lg:col-span-7 flex flex-col rounded-xl border border-slate-800 bg-slate-950 overflow-hidden shadow-lg">
+          <div className="flex min-h-[30rem] flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-950 shadow-lg lg:col-span-7 lg:min-h-0">
           {/* Simulated Browser Chrome Top Bar */}
-          <div className="border-b border-slate-800 bg-slate-900 px-4 py-2 flex items-center gap-3">
+          <div className="flex items-center gap-3 border-b border-slate-800 bg-slate-900 px-4 py-2">
             <div className="flex items-center gap-1.5">
               <div className="h-3 w-3 rounded-full bg-rose-500/80" />
               <div className="h-3 w-3 rounded-full bg-amber-500/80" />
@@ -271,16 +271,16 @@ export const PlaywrightSimulator: React.FC = () => {
             {/* Address Bar */}
             <div className="flex-1 flex items-center gap-2 rounded-lg bg-slate-950 border border-slate-800 px-3 py-1 text-xs text-slate-300 font-mono">
               <Globe className="h-3.5 w-3.5 text-emerald-400" />
-              <span>https://portal.enterprise.io/dashboard</span>
-              <span className="ml-auto text-[10px] text-emerald-400 font-semibold">SSL 256-bit</span>
+              <span className="truncate">https://portal.enterprise.io/dashboard</span>
+              <span className="ml-auto hidden text-[10px] font-semibold text-emerald-400 sm:inline">SSL 256-bit</span>
             </div>
           </div>
 
           {/* Browser DOM Viewport Area */}
-          <div className="flex-1 bg-slate-900/60 p-6 flex flex-col justify-between relative overflow-hidden">
+           <div className="relative flex flex-1 flex-col justify-between overflow-hidden bg-slate-900/60 p-4 sm:p-6">
             {/* Top Navigation Bar of the target app */}
             <div className="flex items-center justify-between border-b border-slate-800/80 pb-4">
-              <div className="flex items-center gap-2 font-bold text-white tracking-tight">
+              <div className="flex items-center gap-2 font-bold text-slate-100 tracking-tight">
                 <div className="h-7 w-7 rounded-lg bg-blue-600 flex items-center justify-center text-white text-xs font-black">
                   EP
                 </div>
@@ -371,10 +371,10 @@ export const PlaywrightSimulator: React.FC = () => {
                         : 'border-slate-800 bg-slate-950/80'
                     }`}
                   >
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                       <h2
                         data-testid="welcome-heading"
-                        className="text-lg font-bold text-white flex items-center gap-2"
+                        className="text-lg font-bold text-slate-100 flex items-center gap-2"
                       >
                         {currentStepIndex >= 4 ? 'Welcome back, Lead Architect!' : 'Welcome to Enterprise Portal'}
                         {currentStepIndex === 5 && (
@@ -392,16 +392,16 @@ export const PlaywrightSimulator: React.FC = () => {
                   </div>
 
                   {/* Analytics Stats Grid */}
-                  <div className="grid grid-cols-3 gap-3">
+                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                     <div className="rounded-lg border border-slate-800 bg-slate-950 p-3">
                       <span className="text-[10px] uppercase font-semibold text-slate-500 block">Tests Run</span>
-                      <span className="text-lg font-black text-white">1,248</span>
+                      <span className="text-lg font-black text-slate-100">1,248</span>
                       <span className="text-[10px] text-emerald-400 block mt-0.5">100% Passed</span>
                     </div>
 
                     <div className="rounded-lg border border-slate-800 bg-slate-950 p-3">
                       <span className="text-[10px] uppercase font-semibold text-slate-500 block">Avg Duration</span>
-                      <span className="text-lg font-black text-white">42ms</span>
+                      <span className="text-lg font-black text-slate-100">42ms</span>
                       <span className="text-[10px] text-cyan-400 block mt-0.5">Parallel Workers</span>
                     </div>
 

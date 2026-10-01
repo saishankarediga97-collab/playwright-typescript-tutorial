@@ -11,7 +11,8 @@ import {
   Copy,
   Check
 } from 'lucide-react';
-import { runTypeScriptCode, ConsoleOutputItem } from '../utils/codeRunner';
+import { runTypeScriptCode } from '../utils/codeRunner';
+import type { ConsoleOutputItem } from '../utils/codeRunner';
 
 interface CodePlaygroundProps {
   initialCode?: string;
@@ -294,12 +295,12 @@ export const CodePlayground: React.FC<CodePlaygroundProps> = ({ initialCode }) =
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] p-4 sm:p-6 max-w-7xl mx-auto w-full">
+    <div className="mx-auto flex min-h-[calc(100dvh-4rem)] w-full max-w-7xl flex-col p-4 sm:p-6 lg:h-[calc(100dvh-4rem)] lg:min-h-0">
       {/* Top Controls Bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-800">
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold text-white flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <h1 className="text-lg font-bold text-slate-100 sm:text-xl flex items-center gap-2">
               <Terminal className="h-5 w-5 text-indigo-400" />
               TypeScript & Playwright Live Sandbox
             </h1>
@@ -315,12 +316,12 @@ export const CodePlayground: React.FC<CodePlaygroundProps> = ({ initialCode }) =
         {/* Template Selector & Action Buttons */}
         <div className="flex flex-wrap items-center gap-2">
           {/* Template pills */}
-          <div className="hidden md:flex items-center gap-1 bg-slate-900 border border-slate-800 rounded-lg p-1 text-xs">
+          <div className="mobile-scrollbar flex w-full items-center gap-1 overflow-x-auto rounded-lg border border-slate-800 bg-slate-900 p-1 text-xs md:w-auto md:max-w-[34rem]">
             {TEMPLATES.map((tmpl) => (
               <button
                 key={tmpl.name}
                 onClick={() => handleSelectTemplate(tmpl.code)}
-                className={`px-2.5 py-1 rounded-md transition-all font-medium ${
+                className={`shrink-0 rounded-md px-2.5 py-1 transition-all font-medium ${
                   code === tmpl.code
                     ? 'bg-indigo-600 text-white shadow-sm'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
@@ -362,10 +363,10 @@ export const CodePlayground: React.FC<CodePlaygroundProps> = ({ initialCode }) =
       </div>
 
       {/* Editor & Console Split Layout */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4 min-h-0">
+      <div className="mt-4 grid flex-1 grid-cols-1 gap-4 min-h-0 lg:grid-cols-2">
         {/* Left Column: Code Editor */}
         <div className="flex flex-col rounded-xl border border-slate-800 bg-slate-950 overflow-hidden shadow-lg">
-          <div className="flex items-center justify-between border-b border-slate-800 bg-slate-900/90 px-4 py-2">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 bg-slate-900/90 px-4 py-2">
             <div className="flex items-center gap-2 text-xs font-mono text-slate-300">
               <FileCode className="h-4 w-4 text-blue-400" />
               <span>playground.ts</span>
@@ -373,7 +374,7 @@ export const CodePlayground: React.FC<CodePlaygroundProps> = ({ initialCode }) =
             <span className="text-[11px] text-slate-500 font-mono">TypeScript ES2022</span>
           </div>
 
-          <div className="flex-1 relative overflow-hidden flex">
+          <div className="relative flex min-h-[22rem] flex-1 overflow-hidden lg:min-h-0">
             <textarea
               value={code}
               onChange={(e) => setCode(e.target.value)}
@@ -387,7 +388,7 @@ export const CodePlayground: React.FC<CodePlaygroundProps> = ({ initialCode }) =
         {/* Right Column: Console / Execution Output */}
         <div className="flex flex-col rounded-xl border border-slate-800 bg-slate-950 overflow-hidden shadow-lg">
           {/* Console Header */}
-          <div className="flex items-center justify-between border-b border-slate-800 bg-slate-900/90 px-4 py-2">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 bg-slate-900/90 px-4 py-2">
             <div className="flex items-center gap-2 text-xs font-mono text-slate-300">
               <Terminal className="h-4 w-4 text-emerald-400" />
               <span>Console Output</span>

@@ -11,11 +11,25 @@ import { typescriptLessons } from './data/typescriptLessons';
 import { dsaLessons } from './data/dsaLessons';
 import { playwrightLessons } from './data/playwrightLessons';
 import { apiLessons } from './data/apiLessons';
-import { Lesson, ModuleId } from './types/curriculum';
+import type { Lesson, ModuleId } from './types/curriculum';
+
+type ThemeMode = 'dark' | 'light';
 
 export function App() {
   const [currentModule, setCurrentModule] = useState<ModuleId | 'playground' | 'simulator'>('typescript');
   const [selectedLessonId, setSelectedLessonId] = useState<string>(typescriptLessons[0].id);
+  const [theme, setTheme] = useState<ThemeMode>(() => {
+    try {
+      const saved = localStorage.getItem('pw_ts_theme');
+      if (saved === 'light' || saved === 'dark') {
+        return saved;
+      }
+    } catch {
+      // Ignore storage access failures and fall back to system preference.
+    }
+
+    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  });
   const [completedLessonIds, setCompletedLessonIds] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem('pw_ts_completed_lessons');
@@ -37,6 +51,16 @@ export function App() {
       console.error('Failed to save progress to localStorage', e);
     }
   }, [completedLessonIds]);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+
+    try {
+      localStorage.setItem('pw_ts_theme', theme);
+    } catch (e) {
+      console.error('Failed to save theme preference to localStorage', e);
+    }
+  }, [theme]);
 
   // Global Ctrl+K / Cmd+K search listener
   useEffect(() => {
@@ -101,6 +125,10 @@ export function App() {
     setCurrentModule('playground');
   };
 
+  const handleToggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
   // Lesson previous / next navigation
   const currentIndex = currentModuleLessons.findIndex((l) => l.id === selectedLessonId);
   const prevLesson = currentIndex > 0 ? currentModuleLessons[currentIndex - 1] : undefined;
@@ -110,61 +138,71 @@ export function App() {
       : undefined;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-      {/* Header Navbar */}
-      <Navbar
-        currentModule={currentModule}
-        onSelectModule={handleSelectModule}
-        completedLessonCount={completedLessonIds.length}
-        totalLessonCount={allLessons.length}
-        onOpenSearch={() => setIsSearchOpen(true)}
-        onOpenQuiz={() => setIsQuizOpen(true)}
-      />
+    <div className={`theme-app relative min-h-screen overflow-hidden bg-slate-950 text-slate-100 font-sans ${theme}`}>
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="theme-glow theme-glow-primary" />
+        <div className="theme-glow theme-glow-secondary" />
+        <div className="theme-grid" />
+      </div>
 
-      {/* Main View Area */}
-      <main className="flex-1 overflow-hidden">
-        {currentModule === 'playground' ? (
-          <CodePlayground initialCode={playgroundCode} />
-        ) : currentModule === 'simulator' ? (
-          <PlaywrightSimulator />
-        ) : currentModule === 'framework' ? (
-          <FrameworkExplorer />
-        ) : (
-          <div className="mx-auto flex h-full w-full max-w-7xl overflow-hidden px-4 sm:px-6">
-            <Sidebar
-              currentModule={currentModule}
-              lessons={currentModuleLessons}
-              selectedLessonId={selectedLessonId}
-              onSelectLesson={setSelectedLessonId}
-              completedLessonIds={completedLessonIds}
-              onToggleComplete={handleToggleComplete}
-              onSelectModule={(mod) => handleSelectModule(mod)}
-            />
+      <div className="relative z-10 flex min-h-screen flex-col">
+        {/* Header Navbar */}
+        <Navbar
+          currentModule={currentModule}
+          onSelectModule={handleSelectModule}
+          completedLessonCount={completedLessonIds.length}
+          totalLessonCount={allLessons.length}
+          onOpenSearch={() => setIsSearchOpen(true)}
+          onOpenQuiz={() => setIsQuizOpen(true)}
+          theme={theme}
+          onToggleTheme={handleToggleTheme}
+        />
 
-            <LessonViewer
-              lesson={currentLesson}
-              isCompleted={completedLessonIds.includes(currentLesson.id)}
-              onToggleComplete={() => handleToggleComplete(currentLesson.id)}
-              onPrevLesson={prevLesson ? () => setSelectedLessonId(prevLesson.id) : undefined}
-              onNextLesson={nextLesson ? () => setSelectedLessonId(nextLesson.id) : undefined}
-              onOpenInPlayground={handleOpenInPlayground}
-            />
-          </div>
-        )}
-      </main>
+        {/* Main View Area */}
+        <main className="flex-1 overflow-y-auto lg:overflow-hidden">
+          {currentModule === 'playground' ? (
+            <CodePlayground initialCode={playgroundCode} />
+          ) : currentModule === 'simulator' ? (
+            <PlaywrightSimulator />
+          ) : currentModule === 'framework' ? (
+            <FrameworkExplorer />
+          ) : (
+            <div className="mx-auto flex w-full max-w-7xl flex-col overflow-visible px-4 pb-6 sm:px-6 lg:h-full lg:flex-row lg:overflow-hidden lg:pb-0">
+              <Sidebar
+                currentModule={currentModule}
+                lessons={currentModuleLessons}
+                selectedLessonId={selectedLessonId}
+                onSelectLesson={setSelectedLessonId}
+                completedLessonIds={completedLessonIds}
+                onToggleComplete={handleToggleComplete}
+                onSelectModule={(mod) => handleSelectModule(mod)}
+              />
 
-      {/* Global Modals */}
-      <SearchModal
-        isOpen={isSearchOpen}
-        onClose={() => setIsSearchOpen(false)}
-        lessons={allLessons}
-        onSelectLesson={handleSelectLessonFromSearch}
-      />
+              <LessonViewer
+                lesson={currentLesson}
+                isCompleted={completedLessonIds.includes(currentLesson.id)}
+                onToggleComplete={() => handleToggleComplete(currentLesson.id)}
+                onPrevLesson={prevLesson ? () => setSelectedLessonId(prevLesson.id) : undefined}
+                onNextLesson={nextLesson ? () => setSelectedLessonId(nextLesson.id) : undefined}
+                onOpenInPlayground={handleOpenInPlayground}
+              />
+            </div>
+          )}
+        </main>
 
-      <QuizModal
-        isOpen={isQuizOpen}
-        onClose={() => setIsQuizOpen(false)}
-      />
+        {/* Global Modals */}
+        <SearchModal
+          isOpen={isSearchOpen}
+          onClose={() => setIsSearchOpen(false)}
+          lessons={allLessons}
+          onSelectLesson={handleSelectLessonFromSearch}
+        />
+
+        <QuizModal
+          isOpen={isQuizOpen}
+          onClose={() => setIsQuizOpen(false)}
+        />
+      </div>
     </div>
   );
 }

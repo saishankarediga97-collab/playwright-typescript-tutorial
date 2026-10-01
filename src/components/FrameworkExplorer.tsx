@@ -12,7 +12,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { frameworkFiles } from '../data/frameworkFiles';
-import { FrameworkFile } from '../types/curriculum';
+import type { FrameworkFile } from '../types/curriculum';
 
 export const FrameworkExplorer: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<FrameworkFile>(frameworkFiles[0]);
@@ -42,12 +42,12 @@ export const FrameworkExplorer: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] p-4 sm:p-6 max-w-7xl mx-auto w-full">
+    <div className="mx-auto flex min-h-[calc(100dvh-4rem)] w-full max-w-7xl flex-col p-4 sm:p-6 lg:h-[calc(100dvh-4rem)] lg:min-h-0">
       {/* Top Banner */}
       <div className="pb-4 border-b border-slate-800">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <FolderGit2 className="h-5 w-5 text-blue-400" />
-          <h1 className="text-xl font-bold text-white">
+          <h1 className="text-lg font-bold text-slate-100 sm:text-xl">
             Enterprise Playwright + TypeScript Architecture Explorer
           </h1>
           <span className="rounded-full bg-blue-500/10 border border-blue-500/30 px-2.5 py-0.5 text-[11px] font-semibold text-blue-300">
@@ -62,7 +62,7 @@ export const FrameworkExplorer: React.FC = () => {
       {/* Explorer Split Layout */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 mt-4 min-h-0">
         {/* Left Side (4 Cols): File Tree */}
-        <div className="lg:col-span-4 flex flex-col rounded-xl border border-slate-800 bg-slate-950 overflow-hidden shadow-lg">
+          <div className="flex min-h-[20rem] flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-950 shadow-lg lg:col-span-4 lg:min-h-0">
           <div className="border-b border-slate-800 bg-slate-900/90 px-4 py-2.5 flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
               Project Structure
@@ -110,16 +110,16 @@ export const FrameworkExplorer: React.FC = () => {
         </div>
 
         {/* Right Side (8 Cols): Code Viewer & Architectural Highlights */}
-        <div className="lg:col-span-8 flex flex-col rounded-xl border border-slate-800 bg-slate-950 overflow-hidden shadow-lg">
+          <div className="flex min-h-[26rem] flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-950 shadow-lg lg:col-span-8 lg:min-h-0">
           {/* Header Bar */}
-          <div className="border-b border-slate-800 bg-slate-900/90 px-4 py-2.5 flex items-center justify-between">
-            <div className="flex items-center gap-2 font-mono text-xs text-slate-200">
-              {getCategoryIcon(selectedFile.category)}
-              <span className="font-semibold">{selectedFile.path}</span>
-              <span className="rounded bg-slate-800 px-2 py-0.5 text-[10px] text-slate-400 font-sans uppercase font-bold">
-                {selectedFile.category}
-              </span>
-            </div>
+            <div className="flex flex-col gap-3 border-b border-slate-800 bg-slate-900/90 px-4 py-2.5 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex min-w-0 items-center gap-2 font-mono text-xs text-slate-200">
+                {getCategoryIcon(selectedFile.category)}
+                <span className="truncate font-semibold">{selectedFile.path}</span>
+                <span className="rounded bg-slate-800 px-2 py-0.5 text-[10px] text-slate-400 font-sans uppercase font-bold">
+                  {selectedFile.category}
+                </span>
+              </div>
 
             <button
               onClick={handleCopy}
@@ -159,7 +159,7 @@ export const FrameworkExplorer: React.FC = () => {
           </div>
 
           {/* Code Viewer */}
-          <pre className="p-4 text-xs font-mono text-slate-200 overflow-y-auto flex-1 leading-relaxed bg-[#0a0e17]">
+          <pre className="flex-1 overflow-x-auto overflow-y-auto bg-[#0a0e17] p-4 text-xs font-mono leading-relaxed text-slate-200">
             <code>{selectedFile.code}</code>
           </pre>
         </div>

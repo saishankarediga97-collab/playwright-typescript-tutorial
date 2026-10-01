@@ -1,4 +1,4 @@
-import { FrameworkFile } from '../types/curriculum';
+import type { FrameworkFile } from '../types/curriculum';
 
 export const frameworkFiles: FrameworkFile[] = [
   {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search, X, BookOpen, Layers, Sparkles, Globe, ArrowRight } from 'lucide-react';
-import { Lesson, ModuleId } from '../types/curriculum';
+import type { Lesson, ModuleId } from '../types/curriculum';
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -60,8 +60,8 @@ export const SearchModal: React.FC<SearchModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 p-4 bg-slate-950/80 backdrop-blur-sm">
-      <div className="w-full max-w-2xl rounded-2xl border border-slate-800 bg-slate-900 shadow-2xl overflow-hidden flex flex-col max-h-[75vh]">
+    <div className="fixed inset-0 z-50 flex items-start justify-center bg-slate-950/80 p-3 pt-14 backdrop-blur-sm sm:p-4 sm:pt-20">
+      <div className="flex max-h-[82vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-2xl sm:max-h-[75vh]">
         {/* Search Input Bar */}
         <div className="flex items-center gap-3 border-b border-slate-800 px-4 py-3 bg-slate-950">
           <Search className="h-5 w-5 text-slate-400 shrink-0" />
@@ -103,7 +103,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold text-white group-hover:text-blue-300 transition-colors truncate">
+                    <span className="text-xs font-semibold text-slate-100 group-hover:text-blue-300 transition-colors truncate">
                       {lesson.title}
                     </span>
                     <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[9px] font-mono text-slate-400 uppercase">
@@ -122,7 +122,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
         </div>
 
         {/* Modal Footer */}
-        <div className="border-t border-slate-800 px-4 py-2 bg-slate-950/70 flex items-center justify-between text-[11px] text-slate-500">
+        <div className="flex flex-col gap-1 border-t border-slate-800 bg-slate-950/70 px-4 py-2 text-[11px] text-slate-500 sm:flex-row sm:items-center sm:justify-between">
           <span>{filtered.length} topics available</span>
           <span>ESC to close • ⌘K</span>
         </div>

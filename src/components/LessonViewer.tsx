@@ -14,7 +14,7 @@ import {
   ArrowRight,
   Code
 } from 'lucide-react';
-import { Lesson, CodeSnippet } from '../types/curriculum';
+import type { Lesson, CodeSnippet } from '../types/curriculum';
 
 interface LessonViewerProps {
   lesson: Lesson;
@@ -44,7 +44,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   };
 
   return (
-    <div className="flex-1 overflow-y-auto px-6 py-8 max-w-4xl mx-auto h-[calc(100vh-4rem)]">
+    <div className="mx-auto w-full max-w-4xl flex-1 overflow-visible px-0 py-6 sm:px-2 sm:py-8 lg:overflow-y-auto lg:px-6 lg:h-[calc(100dvh-4rem)]">
       {/* Header Info */}
       <div className="space-y-3 pb-6 border-b border-slate-800">
         <div className="flex flex-wrap items-center gap-2">
@@ -65,7 +65,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
             <Clock className="h-3.5 w-3.5" />
             {lesson.readingTime}
           </span>
-          <div className="flex items-center gap-1.5 ml-auto">
+          <div className="flex flex-wrap items-center gap-1.5 md:ml-auto">
             {lesson.tags.map((tag) => (
               <span
                 key={tag}
@@ -77,7 +77,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
           </div>
         </div>
 
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-100">
           {lesson.title}
         </h1>
         <p className="text-base text-slate-300">
@@ -85,7 +85,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
         </p>
 
         {/* Action Bar */}
-        <div className="flex items-center justify-between pt-2">
+        <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between">
           <button
             onClick={onToggleComplete}
             className={`flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all border ${
@@ -152,12 +152,12 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
       <div className="space-y-8">
         {lesson.sections.map((section) => (
           <section key={section.id} className="space-y-4">
-            <h2 className="text-xl font-bold tracking-tight text-white border-b border-slate-800/80 pb-2">
+            <h2 className="text-xl font-bold tracking-tight text-slate-100 border-b border-slate-800/80 pb-2">
               {section.title}
             </h2>
 
             {/* Content text */}
-            <div className="prose prose-invert max-w-none text-sm text-slate-300 leading-relaxed whitespace-pre-line font-sans">
+            <div className="max-w-none whitespace-pre-line font-sans text-sm leading-relaxed text-slate-300">
               {section.content}
             </div>
 
@@ -201,11 +201,11 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
       </div>
 
       {/* Lesson Navigation Footer */}
-      <div className="mt-12 flex items-center justify-between border-t border-slate-800 pt-6">
+      <div className="mt-12 flex flex-col gap-3 border-t border-slate-800 pt-6 sm:flex-row sm:items-center sm:justify-between">
         {onPrevLesson ? (
           <button
             onClick={onPrevLesson}
-            className="flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-900 px-4 py-2 text-xs font-semibold text-slate-300 hover:border-slate-700 hover:text-white transition-all"
+            className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-800 bg-slate-900 px-4 py-2 text-xs font-semibold text-slate-300 hover:border-slate-700 hover:text-white transition-all sm:w-auto"
           >
             <ArrowLeft className="h-3.5 w-3.5" /> Previous Lesson
           </button>
@@ -214,14 +214,14 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
         {onNextLesson ? (
           <button
             onClick={onNextLesson}
-            className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-blue-500 transition-all"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-blue-500 transition-all sm:w-auto"
           >
             Next Lesson <ArrowRight className="h-3.5 w-3.5" />
           </button>
         ) : (
           <button
             onClick={onToggleComplete}
-            className="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-emerald-500 transition-all"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-emerald-500 transition-all sm:w-auto"
           >
             <Check className="h-3.5 w-3.5" /> Complete Track
           </button>
@@ -247,10 +247,10 @@ const CodeBlockCard: React.FC<CodeBlockCardProps> = ({
   return (
     <div className="rounded-xl border border-slate-800 bg-slate-950 overflow-hidden shadow-md">
       {/* Code Header */}
-      <div className="flex items-center justify-between border-b border-slate-800/80 bg-slate-900/80 px-4 py-2.5">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col gap-3 border-b border-slate-800/80 bg-slate-900/80 px-4 py-2.5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex min-w-0 items-center gap-2">
           <Code className="h-4 w-4 text-blue-400" />
-          <span className="text-xs font-medium text-slate-300 font-mono">
+          <span className="truncate text-xs font-medium text-slate-300 font-mono">
             {snippet.title}
           </span>
           <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] font-mono text-slate-400">
@@ -258,7 +258,7 @@ const CodeBlockCard: React.FC<CodeBlockCardProps> = ({
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {snippet.runnable && (
             <button
               onClick={() => onRunInPlayground(snippet.code)}

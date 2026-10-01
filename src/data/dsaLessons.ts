@@ -1,4 +1,4 @@
-import { Lesson } from '../types/curriculum';
+import type { Lesson } from '../types/curriculum';
 
 export const dsaLessons: Lesson[] = [
   {
